@@ -4,6 +4,7 @@ import com.quiz.backendjava.Pergunta;
 import com.quiz.backendjava.SubmissaoQuizDTO;
 import com.quiz.backendjava.TentativaQuiz;
 import com.quiz.backendjava.servico.QuizService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,12 @@ public class QuizController {
     @GetMapping("/perguntas")
     public List<Pergunta> listarPerguntas() {
         return quizService.carregarPerguntas();
+    }
+
+    @PostMapping("/importar")
+    public ResponseEntity<String> importarPerguntas() {
+        String resultado = quizService.importarPerguntasDoJson();
+        return ResponseEntity.ok(resultado);
     }
 
     @PostMapping("/finalizar")
