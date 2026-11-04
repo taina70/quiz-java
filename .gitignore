@@ -33,3 +33,4 @@ build/
 .vscode/
 ### Dados sensíveis/Locais ###
 perguntas.json
+.env

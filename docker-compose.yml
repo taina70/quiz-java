@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: quiz_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_NAME:-quizdb}
+      POSTGRES_USER: ${DB_USER:-quizuser}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-minhasenhasecreta123}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend-java
+    container_name: quiz_backend
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${DB_NAME:-quizdb}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER:-quizuser}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-minhasenhasecreta123}
+    depends_on:
+      - postgres
+
+  frontend:
+    build: ./frontend-react
+    container_name: quiz_frontend
+    restart: always
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
