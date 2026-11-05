@@ -8,7 +8,40 @@ export const quizService = {
     return response.json();
   },
 
-  // Enviar respostas e calcular resultado
+  cadastrarPergunta: async (dadosPergunta) => {
+  const response = await fetch(`${API_BASE_URL}/perguntas`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(dadosPergunta),
+  });
+  
+  if (!response.ok) throw new Error('Erro ao cadastrar pergunta');
+  return response.json();
+  },
+  
+  atualizarPergunta: async (id, dadosPergunta) => {
+    const response = await fetch(`${API_BASE_URL}/perguntas/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(dadosPergunta),
+    });
+    if (!response.ok) throw new Error('Erro ao atualizar pergunta');
+    return response.json();
+  },
+
+  deletarPergunta: async (id) => {
+    const response = await fetch(`${API_BASE_URL}/perguntas/${id}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) throw new Error('Erro ao deletar pergunta');
+  },
+
+  getHistoricoPorUsuario: async (usuarioId) => {
+    const response = await fetch(`${API_BASE_URL}/historico/usuario/${usuarioId}`);
+    if (!response.ok) throw new Error('Erro ao buscar histórico do usuário');
+    return response.json();
+  },
+
   finalizarQuiz: async (dadosSubmissao) => {
     const response = await fetch(`${API_BASE_URL}/finalizar`, {
       method: "POST",

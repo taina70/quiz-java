@@ -8,25 +8,23 @@ import java.util.List;
 public class Pergunta {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String enunciado;
 
     @ElementCollection
-    @CollectionTable(name = "pergunta_opcoes", joinColumns = @JoinColumn(name = "pergunta_id"))
-    @Column(name = "opcao")
     private List<String> opcoes;
 
     private int respostaCorreta;
 
-    public Pergunta() {}
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "categoria_id")
+    private Categoria categoria;
 
-    public Pergunta(Long id, String enunciado, List<String> opcoes, int respostaCorreta) {
-        this.id = id;
-        this.enunciado = enunciado;
-        this.opcoes = opcoes;
-        this.respostaCorreta = respostaCorreta;
-    }
+    private String pontoMelhoria;
+
+    public Pergunta() {}
 
     // Getters e Setters
     public Long getId() { return id; }
@@ -40,4 +38,10 @@ public class Pergunta {
 
     public int getRespostaCorreta() { return respostaCorreta; }
     public void setRespostaCorreta(int respostaCorreta) { this.respostaCorreta = respostaCorreta; }
+
+    public Categoria getCategoria() { return categoria; }
+    public void setCategoria(Categoria categoria) { this.categoria = categoria; }
+
+    public String getPontoMelhoria() { return pontoMelhoria; }
+    public void setPontoMelhoria(String pontoMelhoria) { this.pontoMelhoria = pontoMelhoria; }
 }
